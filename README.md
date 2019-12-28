@@ -1,5 +1,5 @@
 # prometheuslog
-Tail Multiple log files at once, expose metrics about these log files to promtheus.
+Tail Multiple log files at once, expose metrics about those log files to promtheus.
 
 ## Description
 This app represents an easy way to monitor (tail) multiple application log files and expose a /metrics endpoint with stats about that same log file. The metrics exposed are in prometheus format so they can easily be scraped and imported into grafana.
@@ -16,7 +16,7 @@ This app represents an easy way to monitor (tail) multiple application log files
   * Configurable metrics flush interval
   * Log metrics to disk (log file) when debug is enabled
 
-### Instructions for use
+## Instructions for use
 This application will need to be modified before it will work for you, it was designed to be a starting point only. The configuration to edit/add to will be in common.go where you specify both the log line you'd like to search for and the metric name you'd like to keep track of the value in. You'll build upon common.go with additional functions or conditions.
 
 **Please note that dashes in metric names are converted to underscores automatically. Metric name "apm-alert-created-total" in the code becomes "apm_alert_created_total" when its exposed to the /metrics endpoint.
@@ -45,9 +45,9 @@ mySecondApplication,/Users/myuser/filename-2.log
 myThirdApplication,/Users/myuser/filename-3.log
 ```
 
-Once the app is up and running, a /metrics endpoint will be populated on the port (default: 9091) which should contain stats about the log (assuming there are matches found). You can poll the metrics endpoint from a browser or use curl: curl -X http://localhost:9091/metrics
+Once the app is up and running, a /metrics endpoint will be populated on a port (default: 9091) which should contain stats about the log (assuming there were string matches found). You can then poll the metrics endpoint from a browser or use curl: curl -X http://localhost:9091/metrics
 
-## Prometheus Scrape Configuration
+### Prometheus Scrape Configuration
 Once you see that your metrics are populated and changing, you can configure prometheus.  I used the following scraping config which assumes the following metrics format:   <applicationname>_<environment>_<metricname>
 
 ```
@@ -72,16 +72,16 @@ Once you see that your metrics are populated and changing, you can configure pro
       replacement: "$1"
 ```
 
-### Installation
+## Installation
 ```bash
 $ go get -u github.com/keithknott26/prometheuslog
 ```
-## Building
+### Building
 ```bash
 $ cd github.com/keithknott26/prometheuslog/cmd/;
 $ go build prometheuslog.go
 ```
-## Arguments
+### Arguments
 ```bash
 usage: prometheuslog [<flags>]
 
