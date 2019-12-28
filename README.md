@@ -75,7 +75,11 @@ Once you see that your metrics are populated and changing, you can configure pro
 ```bash
 $ go get -u github.com/keithknott26/prometheuslog
 ```
-
+## Building
+```bash
+$ cd github.com/keithknott26/prometheuslog/cmd/;
+$ go build prometheuslog.go
+```
 ## Arguments
 ```bash
 usage: prometheuslog [<flags>]
