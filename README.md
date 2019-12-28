@@ -2,13 +2,13 @@
 Export log metrics for scraping by promtheus
 
 ## Description
-This app represents an easy way to monitor (tail) multiple application log files and expose a /metrics endpoint with stats about the log file. This metrics are in prometheus format so they can easily be scraped and imported into grafana.
+This app represents an easy way to monitor (tail) multiple application log files and expose a /metrics endpoint with stats about that same log file. The metrics exposed are in prometheus format so they can easily be scraped and imported into grafana.
 
 * Features
   * Read config from configuration file
   * Specify infinite amount of logs to monitor
   * Reopen log file in the event of log rollover
-  * Specify application / log file name - this will then will be used in metric name
+  * Specify application / log file name (this name will be used in metric exposed)
   * Configurable listening port
   * Configurable environment (specify 'staging', 'uat', 'prod'). This identifier is required and is used to formulate the metric name.
   * Configurable metrics flush interval
@@ -16,7 +16,7 @@ This app represents an easy way to monitor (tail) multiple application log files
   * Log metrics to disk (log file) when debug is enabled
 
 ### Instructions for use
-This application will need to be modified before it will work for you, it was designed to be a starting point only. The configuration to edit/add to will be in common.go where you specify both the log line you'd like to search for and the metric name you'd like to keep track of the value in.
+This application will need to be modified before it will work for you, it was designed to be a starting point only. The configuration to edit/add to will be in common.go where you specify both the log line you'd like to search for and the metric name you'd like to keep track of the value in. You'll build upon common.go with additional functions or conditions.
 
 **Please note that dashes in metric names are converted to underscores automatically. Metric name "apm-alert-created-total" in the code becomes "apm_alert_created_total" when its exposed to the /metrics endpoint.
 
@@ -33,14 +33,21 @@ if strings.Contains(line, "postPayloadStarted") {
 
 Note: Because the functions in common.go get executed once per log line, you'll want to use performant string matching such as strings.Contains or regex only when necessary.
 
-*This app has been load tested up to 100k operations per/sec using strings.Contains.
+***This app has been load tested up to 100k operations per/sec using strings.Contains.
 
-Remember to populate the config file, and specify it with the -c argument when starting the app.
+Remember to populate the config file, and specify it with the -c argument when starting the app. The format for the configuration file is as follows:
 
-Once the app is up and running, a /metrics endpoint will be populated on the port (default: 9091) which should contain stats about the log (assuming there are matches found). You can pull the metrics endpoint up in a browser use curl: curl -X http://localhost:9091/metrics
+### Config File (prometheuslog.conf)
+```
+myFirstApplication,/Users/myuser/filename-1.log
+mySecondApplication,/Users/myuser/filename-2.log
+myThirdApplication,/Users/myuser/filename-3.log
+```
+
+Once the app is up and running, a /metrics endpoint will be populated on the port (default: 9091) which should contain stats about the log (assuming there are matches found). You can poll the metrics endpoint from a browser or use curl: curl -X http://localhost:9091/metrics
 
 ## Prometheus Scrape Configuration
-Once you see that your metrics are populating, you can configure prometheus.  I used the following scraping config which assumes the following metrics format:   <applicationname>_<environment>_<metricname>
+Once you see that your metrics are populated and changing, you can configure prometheus.  I used the following scraping config which assumes the following metrics format:   <applicationname>_<environment>_<metricname>
 
 ```
  - job_name: 'myJobName'
@@ -87,13 +94,6 @@ Flags:
 
 Args:
   None
-```
-
-## Config File (prometheuslog.conf)
-```
-myFirstApplication,/Users/myuser/filename-1.log
-mySecondApplication,/Users/myuser/filename-2.log
-myThirdApplication,/Users/myuser/filename-3.log
 ```
 
 ### License
