@@ -22,13 +22,13 @@ This application will need to be modified before it will work for you, it was de
 
 For Example:
 ```
-		if strings.Contains(line, "postPayloadStarted") {
-			dashBoard.writeDebugMessage(debug, "Common - Alert Created", applicationName)
-			counter := metrics.GetOrRegisterCounter("apm-alert-created-total", registry)
-			counter.Inc(1)
-		}
-		// If log contains postPayloadStarted, write "Common - Alert Created" as the debug message
-		// and increment the <application name>_apm_alert_created_total metric by 1.
+if strings.Contains(line, "postPayloadStarted") {
+    dashBoard.writeDebugMessage(debug, "Common - Alert Created", applicationName)
+    counter := metrics.GetOrRegisterCounter("apm-alert-created-total", registry)
+    counter.Inc(1)
+}
+// If log contains postPayloadStarted, write "Common - Alert Created" as the debug message
+// and increment the <application name>_apm_alert_created_total metric by 1.
 ```
 
 Note: Because the functions in common.go get executed once per log line, you'll want to use performant string matching such as strings.Contains or regex only when necessary.
