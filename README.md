@@ -1,18 +1,19 @@
 # prometheuslog
-Export log metrics for scraping by promtheus
+Tail Multiple log files at once, expose metrics about these log files to promtheus.
 
 ## Description
 This app represents an easy way to monitor (tail) multiple application log files and expose a /metrics endpoint with stats about that same log file. The metrics exposed are in prometheus format so they can easily be scraped and imported into grafana.
 
 * Features
-  * Read config from configuration file
+  * Parse different types of logs (plaintext or JSON)
+  * Automatically re-open log file in the event of log rollover
   * Specify infinite amount of logs to monitor
-  * Reopen log file in the event of log rollover
+  * Built in rate-limiter to give processing priority to other applications
+  * Read config from configuration file
   * Specify application / log file name (this name will be used in metric exposed)
   * Configurable listening port
   * Configurable environment (specify 'staging', 'uat', 'prod'). This identifier is required and is used to formulate the metric name.
   * Configurable metrics flush interval
-  * Built in rate-limiter to give processing priority to other applications
   * Log metrics to disk (log file) when debug is enabled
 
 ### Instructions for use
