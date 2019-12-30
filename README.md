@@ -16,6 +16,7 @@ This app represents an easy way to monitor (tail) multiple application log files
   * Configurable metrics flush interval
   * Log metrics to disk (log file) when debug is enabled
 
+## Screenshot
 ![image](https://user-images.githubusercontent.com/16966683/71568450-37480700-2a7c-11ea-9743-7ec521e194cb.png)
 
 ## Instructions for use
@@ -94,9 +95,8 @@ Flags:
       --debug                    Enable Debug Mode
   -p, --port=9091                Port to listen for metrics requests. Default: 9091
   -e, --environment="prod"       Environment (staging, uat, or prod). Default: prod
-  -f, --flush-interval=2s        How often to flush available metrics: (1s,5s,15s,1h,etc) (default: 2s) ...)
-  -r, --max-ingestion-rate=10000  
-                                 Ingestion Rate Limiter:(1000,5000,10000,etc) in operations per/sec (default: 10000) ...)
+  -f, --flush-interval=2s        How often to flush metrics at the endpoint: (1s,5s,15s,1h,etc) (default: 2s) ...)
+  -r, --max-ingestion-rate=10000 Ingestion Rate Limiter:(1000,5000,10000,etc) in log lines read per/sec (default: 10000) ...)
   -c, --config-file=CONFIG-FILE  Full path to the prometheuslog.conf config file.
 
 Args:
