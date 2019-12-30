@@ -16,6 +16,8 @@ This app represents an easy way to monitor (tail) multiple application log files
   * Configurable metrics flush interval
   * Log metrics to disk (log file) when debug is enabled
 
+![image](https://user-images.githubusercontent.com/16966683/71568450-37480700-2a7c-11ea-9743-7ec521e194cb.png)
+
 ## Instructions for use
 This application will need to be modified before it will work for you, it was designed to be a starting point only. The configuration to edit/add to will be in common.go where you specify both the log line you'd like to search for and the metric name you'd like to keep track of the value in. You'll build upon common.go with additional functions or conditions.
 
