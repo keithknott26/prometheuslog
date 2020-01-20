@@ -30,7 +30,7 @@ var (
 	configFile           = app.Flag("config-file", "Full path to the prometheuslog.conf config file.\n").Short('c').ExistingFile()
 )
 
-type Property struct {
+type property struct {
 	name string
 	log  string
 }
@@ -48,10 +48,10 @@ func readCSVFile(fileName string) ([][]string, error) {
 	return lines, err
 }
 
-func parseCSVLines(lines [][]string) []Property {
-	ret := make([]Property, len(lines))
+func parseCSVLines(lines [][]string) []property {
+	ret := make([]property, len(lines))
 	for i, line := range lines {
-		ret[i] = Property{
+		ret[i] = property{
 			name: line[0],
 			log:  line[1],
 		}
@@ -60,13 +60,13 @@ func parseCSVLines(lines [][]string) []Property {
 }
 func serveEndpoint() {
 	http.Handle("/metrics", promhttp.Handler())
-	port_number := strconv.Itoa(*port)
-	port_str := fmt.Sprintf(":%s", port_number)
+	portNumber := strconv.Itoa(*port)
+	portStr := fmt.Sprintf(":%s", portNumber)
 	green := hue.New(hue.Green, hue.Default)
 	hw := hue.NewWriter(os.Stdout, green)
 	hw.SetHue(green)
-	hw.WriteString(fmt.Sprintf("Listening for /metrics requests on port %s\n", port_str))
-	log.Fatal(http.ListenAndServe(port_str, nil))
+	hw.WriteString(fmt.Sprintf("Listening for /metrics requests on port %s\n", portStr))
+	log.Fatal(http.ListenAndServe(portStr, nil))
 }
 func enableMetricsLogging(applicationName string, registry metrics.Registry, intervalSec time.Duration) {
 	/*         Metric Logging              */
@@ -181,8 +181,8 @@ func main() {
 					enableMetricsLogging(app.name, Application.MetricsRegistry, 60*time.Second)
 				}
 
-				//sleep required
-				time.Sleep(2 * time.Second)
+				//sleep for a second
+				time.Sleep(1 * time.Second)
 
 				pClient := prometheusmetrics.NewPrometheusProvider(Application.MetricsRegistry, app.name, *environment, prometheus.DefaultRegisterer, *metricsFlushInterval)
 				go pClient.UpdatePrometheusMetrics()

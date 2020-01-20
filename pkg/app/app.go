@@ -29,7 +29,7 @@ type App struct {
 type Application struct {
 	App
 	sync.Mutex
-	Id                 int
+	ID                 int
 	TotalLinesRead     int
 	ReadRate           int
 	LogTimeDifference  string
@@ -42,7 +42,7 @@ type Application struct {
 	DebugEnabled       bool
 }
 
-type PrometheusConfig struct {
+type prometheusConfig struct {
 	namespace     string
 	Registry      metrics.Registry // Registry to be exported
 	subsystem     string
@@ -59,7 +59,7 @@ func NewApp() *App {
 
 func NewApplication(app *App, id int, applicationName string) Application {
 	application := Application{
-		Id:                id,
+		ID:                id,
 		ApplicationName:   applicationName,
 		TotalLinesRead:    0,
 		ReadRate:          0,
@@ -78,7 +78,7 @@ func (app *App) AddApplication(id int, applicationName string, logPath string, m
 	defer app.Unlock()
 
 	application := NewApplication(app, id, applicationName)
-	application.Id = id
+	application.ID = id
 	application.LogFollower = application.createFollower(logPath)
 	application.MetricsRegistry = application.createRegistry(applicationName)
 	application.PrometheusConfig = prometheusmetrics.NewPrometheusProvider(application.MetricsRegistry, applicationName, "subsys", prometheus.DefaultRegisterer, 1*time.Second)
@@ -100,19 +100,19 @@ func (app *App) writeDebugMessage(debug bool, message string, applicationName st
 }
 
 func (application *Application) createFollower(logPath string) *follower.Follower {
-	log_follower, err := follower.New(logPath, follower.Config{
+	logFollower, err := follower.New(logPath, follower.Config{
 		Whence: io.SeekEnd,
 		Offset: 0,
 		Reopen: true,
 	})
 	fmt.Println(fmt.Sprintf("Attaching to: %s", logPath))
-	if log_follower.Err() != nil {
-		log.Println(log_follower.Err())
+	if logFollower.Err() != nil {
+		log.Println(logFollower.Err())
 	}
 	if err != nil {
 		log.Println(err)
 	}
-	return log_follower
+	return logFollower
 }
 
 func (application *Application) queueWorker(alLog *follower.Follower, maxRate int) {
@@ -126,7 +126,7 @@ func (application *Application) queueWorker(alLog *follower.Follower, maxRate in
 		application.CategorizeLogData(line.String(), application.ApplicationName, &application.MetricsRegistry, application.DebugEnabled)
 
 		meter.Inc(1)
-		application.TotalLinesRead = application.TotalLinesRead + 1
+		application.TotalLinesRead++
 	}
 }
 

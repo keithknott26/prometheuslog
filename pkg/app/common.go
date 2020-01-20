@@ -133,7 +133,7 @@ func (dashBoard *App) parseMemoryMessages(line string, applicationName string, r
 			freemem := submatch[1]
 			totalmem := submatch[2]
 			if debug == true {
-				debugline := fmt.Sprintf("Common - Memory Report - Free %d Max: %d", freemem, totalmem)
+				debugline := fmt.Sprintf("Common - Memory Report - Free %s Max: %s", freemem, totalmem)
 				dashBoard.writeDebugMessage(debug, debugline, applicationName)
 			}
 			s, _ := strconv.ParseFloat(freemem, 64)
